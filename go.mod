@@ -1,4 +1,4 @@
-module github.com/15071986/GO
+module github
 
 go 1.17
 
