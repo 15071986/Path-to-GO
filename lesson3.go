@@ -17,41 +17,42 @@ func fact(n int) int {
 }
 
 func main() {
-	var a, b, res float64
-	var op string
+	var res float64
 
-	fmt.Print("Введите первое число: ")
-	fmt.Scanln(&a)
+	for {
+		var a, b, err float64
+		var op string
+		if err != nil {
+			fmt.Println("ошибка: %s\n", err.Error())
 
-	fmt.Print("Введите второе число (для расчета факториала введите 0): ")
-	fmt.Scanln(&b)
+			continue
 
-	fmt.Print("Введите арифметическую операцию (+, -, *, /, ^, f): ")
-	fmt.Scanln(&op)
+			switch op {
+			case "+":
+				res = a + b
+			case "-":
+				res = a - b
+			case "*":
+				res = a * b
+			case "/":
+				if b != 0 {
+					fmt.Println(a / b)
+				} else {
+					fmt.Println("Деление на ноль, ошибка!")
+				}
+				return
+			case "^":
+				res = math.Pow(a, b)
+			case "f":
+				res = float64(fact(int(a)))
 
-	switch op {
-	case "+":
-		res = a + b
-	case "-":
-		res = a - b
-	case "*":
-		res = a * b
-	case "/":
-		if b != 0 {
-			fmt.Println(a / b)
-		} else {
-			fmt.Println("Деление на ноль, ошибка!")
+			default:
+				fmt.Println("Операция выбрана неверно")
+				os.Exit(1)
+			}
+
+			fmt.Printf("Результат выполнения операции: %.2f\n", res)
 		}
-		return
-	case "^":
-		res = math.Pow(a, b)
-	case "f":
-		res = float64(fact(int(a)))
 
-	default:
-		fmt.Println("Операция выбрана неверно")
-		os.Exit(1)
 	}
-
-	fmt.Printf("Результат выполнения операции: %.2f\n", res)
 }
