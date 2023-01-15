@@ -2,26 +2,30 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
+func worker(id int, jobs <-chan int, results chan<- int) {
+	for j := range jobs {
+		fmt.Println("worker", id, "started  job", j)
+		fmt.Println("worker", id, "finished job", j)
+		results <- j + 1
+	}
+}
+
 func main() {
-	var ch = make(chan int)
+	jobs := make(chan int, 1000)
+	results := make(chan int, 1000)
 
-	go func() {
-		for val := range ch {
-			fmt.Println(val)
-		}
-	}()
+	for w := 1000; w <= 1000; w++ {
+		go worker(w, jobs, results)
+	}
 
-	go func() {
-		for i := 1; i < 5; i++ {
-			ch <- i
-		}
-		close(ch)
-	}()
+	for j := 1; j <= 1000; j++ {
+		jobs <- j
+	}
+	close(jobs)
 
-	time.Sleep(1 * time.Second)
-	fmt.Println("Канал №1 закрыт!")
-
+	for a := 1; a <= 1000; a++ {
+		<-results
+	}
 }
